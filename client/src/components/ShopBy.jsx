@@ -2,6 +2,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import HorSlider from "./HorSlider";
 
+const data = [
+  { img: "/GenInfo/adidas.jpg", brand: "Adidas", to: "/search/adidas" },
+  { img: "/GenInfo/nike.png", brand: "Nike", to: "/search/nike" },
+  { img: "/GenInfo/skechers.jpg", brand: "Skechers", to: "/search/skechers" },
+  { img: "/GenInfo/puma.jpg", brand: "Puma", to: "/search/puma" },
+];
+
+
 const ShopBy = ({ filter, title }) => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
@@ -11,9 +19,14 @@ const ShopBy = ({ filter, title }) => {
     let isMounted = true;
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/filter/${filter}`
-        );
+        let res = {
+          data: [...data]
+        };
+        if (filter !== 'bestSellers') {
+          res = await axios.get(
+            `${import.meta.env.VITE_BASE_URL}/api/filter/${filter}`
+          );
+        }
         if (isMounted) {
           setProducts(res.data);
           setLoading(false);
